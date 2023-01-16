@@ -1,3 +1,24 @@
+#[derive(Debug)]
+struct CharacterValue {
+    character: char,
+    value: u32,
+}
+
+impl CharacterValue {
+    fn new(character: char) -> Self {
+        let value = match character.is_uppercase() {
+            true => (character as u32) - 38,
+            false => (character as u32) - 96
+        };
+
+        Self {character, value}
+    }
+
+    fn get_value(self) -> u32 {
+        self.value
+    }
+}
+
 fn parse_input(input: &str) -> Vec<&str> {
     input
         .split("\n")
@@ -6,7 +27,7 @@ fn parse_input(input: &str) -> Vec<&str> {
 }
 
 pub fn part_one(input: &str) -> Option<u32> {
-    let parsed_input: Vec<char> = parse_input(input)
+    let parsed_input: u32 = parse_input(input)
         .iter()
         .map(|row| {
             let split_index = row.len() / 2;
@@ -22,11 +43,10 @@ pub fn part_one(input: &str) -> Option<u32> {
                 })
                 .expect("Char must exist here!");
         })
-        .collect();
+        .map(|letter| CharacterValue::new(letter).get_value())
+        .sum();
 
-    println!("Parsed Input: {:?}", parsed_input);
-
-    None
+    Some(parsed_input)
 }
 
 pub fn part_two(_input: &str) -> Option<u32> {
@@ -46,7 +66,7 @@ mod tests {
     #[test]
     fn test_part_one() {
         let input = advent_of_code::read_file("examples", 3);
-        assert_eq!(part_one(&input), None);
+        assert_eq!(part_one(&input), Some(157));
     }
 
     #[test]
