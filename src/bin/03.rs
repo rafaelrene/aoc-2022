@@ -49,8 +49,38 @@ pub fn part_one(input: &str) -> Option<u32> {
     Some(parsed_input)
 }
 
-pub fn part_two(_input: &str) -> Option<u32> {
-    None
+pub fn part_two(input: &str) -> Option<u32> {
+    let parsed_input: Vec<&str> = parse_input(input);
+    let elf_group_badges_value: u32 = parsed_input
+        .chunks(3)
+        .map(|elf_group| {
+            let first_elf = elf_group[0];
+            let second_elf = elf_group[1];
+            let third_elf = elf_group[2];
+
+            let badge: char = first_elf
+                .chars()
+                .find(|first_elf_item| {
+                    let second_elf_matching_item = second_elf
+                        .chars()
+                        .find(|second_elf_item| first_elf_item == second_elf_item);
+
+                    let third_elf_matching_item = third_elf
+                        .chars()
+                        .find(|third_elf_item| first_elf_item == third_elf_item);
+
+                    match (second_elf_matching_item, third_elf_matching_item) {
+                        (Some(..), Some(..)) => true,
+                        (_, _) => false,
+                    }
+                })
+                .expect("Badge must exist!");
+
+            CharacterValue::new(badge).get_value()
+        })
+        .sum();
+
+    Some(elf_group_badges_value)
 }
 
 fn main() {
@@ -72,6 +102,6 @@ mod tests {
     #[test]
     fn test_part_two() {
         let input = advent_of_code::read_file("examples", 3);
-        assert_eq!(part_two(&input), None);
+        assert_eq!(part_two(&input), Some(70));
     }
 }
