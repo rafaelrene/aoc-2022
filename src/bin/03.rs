@@ -1,6 +1,7 @@
+use advent_of_code::helpers::parse_input;
+
 #[derive(Debug)]
 struct CharacterValue {
-    character: char,
     value: u32,
 }
 
@@ -11,19 +12,12 @@ impl CharacterValue {
             false => (character as u32) - 96
         };
 
-        Self {character, value}
+        Self {value}
     }
 
     fn get_value(self) -> u32 {
         self.value
     }
-}
-
-fn parse_input(input: &str) -> Vec<&str> {
-    input
-        .split("\n")
-        .filter(|round| !round.is_empty())
-        .collect()
 }
 
 pub fn part_one(input: &str) -> Option<u32> {

@@ -1,3 +1,5 @@
+use advent_of_code::helpers::parse_input;
+
 #[derive(Debug, Copy, Clone)]
 enum RoundPoints {
     LOSS = 0,
@@ -96,10 +98,9 @@ impl Round {
 }
 
 
-fn parse_input(input: &str) -> Vec<Vec<char>> {
+fn map_input_to_rounds(input: Vec<&str>) -> Vec<Vec<char>> {
     input
-        .split("\n")
-        .filter(|round| !round.is_empty())
+        .iter()
         .map(|round|
             round
                 .split(' ')
@@ -110,7 +111,8 @@ fn parse_input(input: &str) -> Vec<Vec<char>> {
 }
 
 pub fn part_one(input: &str) -> Option<u32> {
-    let rounds = parse_input(input);
+    let parsed_input = parse_input(input);
+    let rounds = map_input_to_rounds(parsed_input);
     let my_score: u32 = rounds
         .iter()
         .map(|round| {
@@ -125,7 +127,8 @@ pub fn part_one(input: &str) -> Option<u32> {
 }
 
 pub fn part_two(input: &str) -> Option<u32> {
-    let rounds = parse_input(input);
+    let parsed_input = parse_input(input);
+    let rounds = map_input_to_rounds(parsed_input);
     let my_score: u32 = rounds
         .iter()
         .map(|round| {
